@@ -1,69 +1,27 @@
 package UseCase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * UC4: Store Character Pattern in a Class
+ * UC5: Use Map for Character Patterns and Render via Function
  * <p>
- * This program demonstrates encapsulation of banner
- * character data using an inner class and renders
- * the "OOPS" banner using reusable OOPS principles.
+ * This program stores banner character patterns in a HashMap
+ * and renders the word "OOPS" using nested loops and StringBuilder.
  * <p>
- * Output remains unchanged from UC2 and UC3.
+ * Output is same as UC2, UC3, and UC4.
  *
  * @author Thanigaivel
- * @version 4.0
+ * @version 5.0
  */
 
 public class PrintOOPS {
 
-    static class CharacterPatternMap {
+    static Map<Character, String[]> buildCharacterPatternMap() {
 
-        private final char character;
+        Map<Character, String[]> patternMap = new HashMap<>();
 
-        private final String[] pattern;
-
-        CharacterPatternMap(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
-
-        public char getCharacter() {
-            return character;
-        }
-
-        public String[] getPattern() {
-            return pattern;
-        }
-    }
-
-    static String[] buildBanner(CharacterPatternMap[] characters) {
-
-        String[] banner = new String[7];
-
-        for (int row = 0; row < 7; row++) {
-            StringBuilder line = new StringBuilder();
-
-            for (int col = 0; col < characters.length; col++) {
-                line.append(characters[col].getPattern()[row]);
-
-                if (col < characters.length - 1) {
-                    line.append("  ");
-                }
-            }
-            banner[row] = line.toString();
-        }
-        return banner;
-    }
-
-    static void printBanner(String[] banner) {
-        for (String line : banner) {
-            System.out.println(line);
-        }
-    }
-
-    public static void main(String[] args) {
-
-        // Create character pattern objects
-        CharacterPatternMap o = new CharacterPatternMap('O', new String[]{
+        patternMap.put('O', new String[]{
                 " *** ",
                 "*   *",
                 "*   *",
@@ -73,15 +31,7 @@ public class PrintOOPS {
                 " *** "
         });
 
-        CharacterPatternMap[] bannerChars = getCharacterPatternMaps(o);
-
-        // Build and print banner
-        String[] banner = buildBanner(bannerChars);
-        printBanner(banner);
-    }
-
-    private static CharacterPatternMap[] getCharacterPatternMaps(CharacterPatternMap o) {
-        CharacterPatternMap p = new CharacterPatternMap('P', new String[]{
+        patternMap.put('P', new String[]{
                 "**** ",
                 "*   *",
                 "**** ",
@@ -91,7 +41,7 @@ public class PrintOOPS {
                 "*    "
         });
 
-        CharacterPatternMap s = new CharacterPatternMap('S', new String[]{
+        patternMap.put('S', new String[]{
                 " ****",
                 "*    ",
                 " ****",
@@ -101,10 +51,37 @@ public class PrintOOPS {
                 " ****"
         });
 
-        // Array of objects (O, O, P, S)
-        CharacterPatternMap[] bannerChars = {
-                o, o, p, s
-        };
-        return bannerChars;
+        return patternMap;
+    }
+
+
+    static void renderBanner(String message, Map<Character, String[]> patternMap) {
+
+        int height = 7;
+
+        for (int row = 0; row < height; row++) {
+
+            StringBuilder lineBuilder = new StringBuilder();
+
+            for (int i = 0; i < message.length(); i++) {
+                char ch = message.charAt(i);
+                lineBuilder.append(patternMap.get(ch)[row]);
+
+                if (i < message.length() - 1) {
+                    lineBuilder.append("  ");
+                }
+            }
+
+            System.out.println(lineBuilder);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Map<Character, String[]> patternMap = buildCharacterPatternMap();
+
+        String message = "OOPS";
+
+        renderBanner(message, patternMap);
     }
 }
