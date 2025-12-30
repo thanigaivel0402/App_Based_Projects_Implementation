@@ -1,50 +1,69 @@
 package UseCase;
 
 /**
- * UC3: Refactor Banner Logic into Functions
+ * UC4: Store Character Pattern in a Class
  * <p>
- * This program renders the "OOPS" banner by refactoring
- * banner-building logic into reusable static methods.
+ * This program demonstrates encapsulation of banner
+ * character data using an inner class and renders
+ * the "OOPS" banner using reusable OOPS principles.
  * <p>
- * Output remains same as UC2.
+ * Output remains unchanged from UC2 and UC3.
  *
  * @author Thanigaivel
- * @version 3.0
+ * @version 4.0
  */
-class PrintOOPS {
 
-    public static void main(String[] args) {
+public class PrintOOPS {
 
-        String[] banner = buildPattern();
+    static class CharacterPatternMap {
 
-        printPattern(banner);
+        private final char character;
+
+        private final String[] pattern;
+
+        CharacterPatternMap(char character, String[] pattern) {
+            this.character = character;
+            this.pattern = pattern;
+        }
+
+        public char getCharacter() {
+            return character;
+        }
+
+        public String[] getPattern() {
+            return pattern;
+        }
     }
 
-    static String[] buildPattern() {
-
-        String[] o = getOPattern();
-        String[] p = getPPattern();
-        String[] s = getSPattern();
+    static String[] buildBanner(CharacterPatternMap[] characters) {
 
         String[] banner = new String[7];
 
-        for (int i = 0; i < 7; i++) {
-            banner[i] = o[i] + "  " + o[i] + "  " + p[i] + "  " + s[i];
-        }
+        for (int row = 0; row < 7; row++) {
+            StringBuilder line = new StringBuilder();
 
+            for (int col = 0; col < characters.length; col++) {
+                line.append(characters[col].getPattern()[row]);
+
+                if (col < characters.length - 1) {
+                    line.append("  ");
+                }
+            }
+            banner[row] = line.toString();
+        }
         return banner;
     }
 
-
-    static void printPattern(String[] pattern) {
-        for (String line : pattern) {
+    static void printBanner(String[] banner) {
+        for (String line : banner) {
             System.out.println(line);
         }
     }
 
-    // Encapsulated pattern for letter O
-    static String[] getOPattern() {
-        return new String[]{
+    public static void main(String[] args) {
+
+        // Create character pattern objects
+        CharacterPatternMap o = new CharacterPatternMap('O', new String[]{
                 " *** ",
                 "*   *",
                 "*   *",
@@ -52,12 +71,17 @@ class PrintOOPS {
                 "*   *",
                 "*   *",
                 " *** "
-        };
+        });
+
+        CharacterPatternMap[] bannerChars = getCharacterPatternMaps(o);
+
+        // Build and print banner
+        String[] banner = buildBanner(bannerChars);
+        printBanner(banner);
     }
 
-    // Encapsulated pattern for letter P
-    static String[] getPPattern() {
-        return new String[]{
+    private static CharacterPatternMap[] getCharacterPatternMaps(CharacterPatternMap o) {
+        CharacterPatternMap p = new CharacterPatternMap('P', new String[]{
                 "**** ",
                 "*   *",
                 "**** ",
@@ -65,12 +89,9 @@ class PrintOOPS {
                 "*    ",
                 "*    ",
                 "*    "
-        };
-    }
+        });
 
-    // Encapsulated pattern for letter S
-    static String[] getSPattern() {
-        return new String[]{
+        CharacterPatternMap s = new CharacterPatternMap('S', new String[]{
                 " ****",
                 "*    ",
                 " ****",
@@ -78,6 +99,12 @@ class PrintOOPS {
                 "    *",
                 "*   *",
                 " ****"
+        });
+
+        // Array of objects (O, O, P, S)
+        CharacterPatternMap[] bannerChars = {
+                o, o, p, s
         };
+        return bannerChars;
     }
 }
